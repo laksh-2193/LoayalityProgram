@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request, render_template
 from pymongo import MongoClient
 import random, json, datetime
 import secrets
-
 app = Flask(__name__)
 client = MongoClient("mongodb+srv://cardandeducate:cardandeducate@cardandeducate.ydrpzsc.mongodb.net/?retryWrites=true&w=majority")
 db = client["Information"]
