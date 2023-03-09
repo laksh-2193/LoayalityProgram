@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cards Info</title>
+    <!-- Add the required CSS and JS files for DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#cards-table').DataTable();
+      });
+
+      function generateQRCode(id) {
+        var qrCode = new QRCode(document.getElementById("qrcode-" + id), {
+          text: id,
+          width: 64,
+          height: 64,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Cards Information</h1>
+    <table id="cards-table">
+      <thead>
+        <tr>
+          <th>Card ID</th>
+          <th>User Name</th>
+          <th>User Email</th>
+          <th>User ID</th>
+          <th>Validity From</th>
+          <th>QR Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for card in cards %}
+        <tr>
+          <td>{{ card["_id"] }}</td>
+          {% for user in users %}
+            {% if user["_id"] == card["userid"] %}
+              <td>{{ user["name"] }}</td>
+              <td>{{ user["email"] }}</td>
+            {% endif %}
+          {% endfor %}
+          <td>{{ card["userid"] }}</td>
+          <td>{{ card["validityFrom"] }}</td>
+          <td><div id="qrcode-{{ card['_id'] }}"></div><script>generateQRCode("{{ card['_id'] }}")</script></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
